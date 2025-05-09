@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 241134070}
   - component: {fileID: 241134069}
   - component: {fileID: 241134072}
+  - component: {fileID: 241134073}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -246,11 +247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 524584c5ad270d04e9ec06903b8b152b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 4
-  jumpHeight: 2
-  dashSpeed: 30
-  dashDuration: 0.2
-  dashCooldown: 1
 --- !u!143 &241134070
 CharacterController:
   m_ObjectHideFlags: 0
@@ -314,6 +310,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &241134073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241134068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc79d158d2f5c394c880c0d601193b00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 8
+  jumpHeight: 2
+  _controller: {fileID: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  isGrounded: 0
+  dashSpeed: 30
+  dashDuration: 0.2
+  dashCooldown: 0.3
+  isDashing: 0
+  dashTime: 0
+  lastDashTime: -Infinity
+  dashDirection: {x: 0, y: 0, z: 0}
+  currentDashSpeed: 0
+  _animator: {fileID: 0}
 --- !u!4 &280156857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7637404054855513353, guid: 740f01dfb0f96c349b193b87ce000668, type: 3}
