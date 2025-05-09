@@ -2,10 +2,17 @@
 /shelf/
 /workspace.xml
 # Rider ignored files
+<<<<<<< HEAD
 /projectSettingsUpdater.xml
 /.idea.Pluton.iml
 /contentModel.xml
 /modules.xml
+=======
+/modules.xml
+/projectSettingsUpdater.xml
+/.idea.Pluton.iml
+/contentModel.xml
+>>>>>>> 224b7282a6cdee05ce6e3e6885f7b4c03011f5df
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
