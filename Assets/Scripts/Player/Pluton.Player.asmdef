@@ -1,7 +1,9 @@
 {
     "name": "PlayerContoller",
-    "rootNamespace": "PlayerContoller",
-    "references": ["Management"],
+    "rootNamespace": "",
+    "references": [
+        "Management"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
