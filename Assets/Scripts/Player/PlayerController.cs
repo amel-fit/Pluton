@@ -10,7 +10,7 @@ namespace PlayerController.Player
         private InputManager Movement;
 
         [SerializeField] private float speed;
-        public Vector3 direction = Vector3.zero;
+        private Vector3 direction = Vector3.zero;
         
         [Header("Dashing")]
         
@@ -26,11 +26,14 @@ namespace PlayerController.Player
         [SerializeField]
         private CharacterController controller;
         
+        private Animator animator;
+        
         
         private void Start()
         {
             Movement.MovementInputReceived += MovementInputReceived;
             Movement.DashInputReceived += DashInputReceived;
+            animator = GetComponent<Animator>();
         }
 
         private void DashInputReceived(bool doDash)
@@ -64,9 +67,8 @@ namespace PlayerController.Player
             direction = new Vector3(horizontal, 0, vertical).normalized;
             
             RotatePlayer(horizontal, vertical);
-            if(!_isDashing)
+            if (!_isDashing)
                 MovePlayer(direction * (Time.fixedDeltaTime * speed));
-
             
         }
 
@@ -93,6 +95,10 @@ namespace PlayerController.Player
             //Debug.Log(horizontal + " " + vertical);
             //Debug.Log($"{direction.x} {direction.y} {direction.z}");
             controller.Move(directionAndSpeed);
+            if (directionAndSpeed != Vector3.zero)
+                animator.SetFloat("Speed", 1f);
+            else
+                animator.SetFloat("Speed", 0f);
         }
     }
 }
