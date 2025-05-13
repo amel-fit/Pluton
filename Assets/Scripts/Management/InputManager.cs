@@ -6,7 +6,8 @@ namespace Management
     public class InputManager : MonoBehaviour
     {
         public Action<float, float> MovementInputReceived;
-        public Action<bool> DashInputReceived; 
+        public Action<bool> DashInputReceived;
+        public Action<bool> AttackInputReceived;
 
         public void FixedUpdate()
         {
@@ -17,6 +18,7 @@ namespace Management
         {
             //Has to be in update because FixedUpdate doesn't pick up on KeyDown consistently 
             DashInputReceived?.Invoke(Input.GetKeyDown(KeyCode.LeftShift));
+            AttackInputReceived?.Invoke(Input.GetKeyDown(KeyCode.Mouse0));
         }
     }
 }

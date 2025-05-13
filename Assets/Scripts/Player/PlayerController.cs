@@ -6,10 +6,13 @@ namespace PlayerController.Player
 {
     public class PlayerController : MonoBehaviour
     {
+
         [SerializeField]
         private InputManager Movement;
-
+        
+        [Header("Movement")]
         [SerializeField] private float speed;
+        private bool isMoving = false;
         private Vector3 direction = Vector3.zero;
         
         [Header("Dashing")]
@@ -20,20 +23,51 @@ namespace PlayerController.Player
         
         private bool _isDashing = false;
         private bool _canDash = true;
+
+
+        [Header("Attacking")]
         
+        [SerializeField] private float attackCooldown = 1;
+        private bool isAttacking = false;
+        private bool canAttack = true;
         
         
         [SerializeField]
         private CharacterController controller;
+
+
+        [Header("Combat")]
+        [SerializeField] private Collider weaponCollider; 
         
+        [Header("Animation")]
         private Animator animator;
-        
-        
+
+
+        private static readonly int IsDashingAnim = Animator.StringToHash("isDashingAnim");
+        private static readonly int Attack1 = Animator.StringToHash("Attack1");
+
+
         private void Start()
         {
             Movement.MovementInputReceived += MovementInputReceived;
             Movement.DashInputReceived += DashInputReceived;
+            Movement.AttackInputReceived += AttackInputReceived;
             animator = GetComponent<Animator>();
+            
+        }
+
+        private void AttackInputReceived(bool doAttack)
+        {
+            if (doAttack && canAttack)
+            {
+                Attack();
+            }
+        }
+
+        private void Attack()
+        {
+            Debug.Log("ATTACK1!");
+            animator.SetTrigger(Attack1);
         }
 
         private void DashInputReceived(bool doDash)
@@ -48,6 +82,7 @@ namespace PlayerController.Player
             
             var startTime = Time.time;
             _isDashing = true;
+            animator.SetBool(IsDashingAnim, true);
             while (Time.time < startTime + dashTime)
             {
                 //do the dash, dash speed compounds on regular speed so it doesn't have to be bigger than moveSpeed
@@ -55,6 +90,7 @@ namespace PlayerController.Player
                 yield return null;
             }
             _isDashing = false;
+            animator.SetBool(IsDashingAnim, false);
             
             //Activate cooldown
             var cooldown = new WaitForSeconds(dashCooldown);
@@ -94,11 +130,26 @@ namespace PlayerController.Player
         {
             //Debug.Log(horizontal + " " + vertical);
             //Debug.Log($"{direction.x} {direction.y} {direction.z}");
-            controller.Move(directionAndSpeed);
-            if (directionAndSpeed != Vector3.zero)
+            isMoving = directionAndSpeed != Vector3.zero;
+            if (isMoving)
+            {
+                controller.Move(directionAndSpeed);
                 animator.SetFloat("Speed", 1f);
+            }
             else
                 animator.SetFloat("Speed", 0f);
+        }
+
+
+        //[Header("Collision Toggles")]
+        private void SwordCollisionOn()
+        {
+            weaponCollider.enabled = true;
+        }
+
+        private void SwordCollisionOff()
+        {
+            weaponCollider.enabled = false;
         }
     }
 }
