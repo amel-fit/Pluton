@@ -566,7 +566,9 @@ MonoBehaviour:
   dashSpeed: 3
   dashTime: 0.25
   dashCooldown: 0.5
+  attackCooldown: 3
   controller: {fileID: 241134070}
+  weaponCollider: {fileID: 8568557672776928864}
 --- !u!4 &280156857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7637404054855513353, guid: 740f01dfb0f96c349b193b87ce000668, type: 3}
@@ -4398,7 +4400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &2096357563974978552
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5786,13 +5788,14 @@ GameObject:
   - component: {fileID: 3746459707735479995}
   - component: {fileID: 8568557672776928863}
   - component: {fileID: 4869892775669755821}
+  - component: {fileID: 8568557672776928864}
   m_Layer: 0
   m_Name: 1H_Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &6301566811151646306
 GameObject:
   m_ObjectHideFlags: 0
@@ -6413,6 +6416,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6301320225699095213}
   m_Mesh: {fileID: -8009583354884533670, guid: b5c7388911beeff45954ad53b805b9bb, type: 3}
+--- !u!65 &8568557672776928864
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6301320225699095213}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.49456692, y: 1.7028981, z: 0.13063349}
+  m_Center: {x: 0.004442405, y: 1.1917845, z: -0.00000017564116}
 --- !u!4 &8625130617863510484
 Transform:
   m_ObjectHideFlags: 0

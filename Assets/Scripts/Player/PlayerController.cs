@@ -66,7 +66,6 @@ namespace PlayerController.Player
 
         private void Attack()
         {
-            Debug.Log("ATTACK1!");
             animator.SetTrigger(Attack1);
         }
 
