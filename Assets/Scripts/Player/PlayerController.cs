@@ -45,6 +45,7 @@ namespace PlayerController.Player
 
         private static readonly int IsDashingAnim = Animator.StringToHash("isDashingAnim");
         private static readonly int Attack1 = Animator.StringToHash("Attack1");
+        private static readonly int Speed = Animator.StringToHash("Speed");
 
 
         private void Start()
@@ -133,10 +134,10 @@ namespace PlayerController.Player
             if (isMoving)
             {
                 controller.Move(directionAndSpeed);
-                animator.SetFloat("Speed", 1f);
+                animator.SetFloat(Speed, 1f);
             }
             else
-                animator.SetFloat("Speed", 0f);
+                animator.SetFloat(Speed, 0f);
         }
 
 
