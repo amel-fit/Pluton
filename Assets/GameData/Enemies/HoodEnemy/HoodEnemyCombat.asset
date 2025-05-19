@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ae6a2b3430baab4db7ad2d5eaa2cdb8, type: 3}
-  m_Name: HoodEnemy
+  m_Script: {fileID: 11500000, guid: 6a94d060527e29648a20eb7213a81525, type: 3}
+  m_Name: HoodEnemyCombat
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  detectionRadius: 5
-  patrolWaitTime: 2
-  patrolPoints: []
-  randomPatrol: 1
+  health: 0
+  damage: 0
