@@ -2,7 +2,8 @@
     "name": "PlayerContoller",
     "rootNamespace": "",
     "references": [
-        "Management"
+        "Management",
+        "Pluton.ScriptableObjects"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
