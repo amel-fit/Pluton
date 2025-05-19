@@ -1,3 +1,4 @@
 {
-	"name": "Pluton.Enemy"
+	"name": "Pluton.Enemy",
+	"references":[ "GUID:714b48dab16ad43448134a36ab2b197e" ]
 }
