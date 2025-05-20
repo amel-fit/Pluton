@@ -39,7 +39,6 @@ public class EnemyAI : MonoBehaviour
         if (agent != null)
         {
             agent.speed = moveSpeed;
-            agent.stoppingDistance = 2f;
             agent.updateRotation = false;
             agent.angularSpeed = 999;
         }

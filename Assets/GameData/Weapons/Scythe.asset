@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d355535c158f0447a1df7e25cf57e76, type: 3}
   m_Name: Scythe
   m_EditorClassIdentifier: 
-  damage: 0
-  criticalChance: 0
+  damage: 15
+  criticalChance: 5
