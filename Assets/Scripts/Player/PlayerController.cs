@@ -11,15 +11,15 @@ namespace PlayerController.Player
         private InputManager Movement;
         
         [Header("Movement")]
-        [SerializeField] private float speed;
+        [SerializeField] private float speed; //scriptable
         private bool isMoving = false;
         private Vector3 direction = Vector3.zero;
         
         [Header("Dashing")]
         
-        [SerializeField] private float dashSpeed = 3;
-        [SerializeField] private float  dashTime = 0.25f;
-        [SerializeField] private float  dashCooldown = 0.5f;
+        [SerializeField] private float dashSpeed = 3; //scriptable
+        [SerializeField] private float  dashTime = 0.25f; //scriptable
+        [SerializeField] private float  dashCooldown = 0.5f; //scriptable
         
         private bool _isDashing = false;
         private bool _canDash = true;
@@ -27,7 +27,7 @@ namespace PlayerController.Player
 
         [Header("Attacking")]
         
-        [SerializeField] private float attackCooldown = 1;
+        [SerializeField] private float attackCooldown = 1; //scriptable
         private bool isAttacking = false;
         private bool canAttack = true;
         
