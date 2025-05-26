@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d355535c158f0447a1df7e25cf57e76, type: 3}
   m_Name: Hammer
   m_EditorClassIdentifier: 
-  damage: 20
-  criticalChance: 10
+  damage: 30
+  criticalChance: 20

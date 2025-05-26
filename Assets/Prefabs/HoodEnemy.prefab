@@ -491,6 +491,8 @@ GameObject:
   - component: {fileID: 3338910476819097708}
   - component: {fileID: 9145886703215993499}
   - component: {fileID: 8821015051498221533}
+  - component: {fileID: 2827138052613868755}
+  - component: {fileID: -4247738186150393495}
   m_Layer: 7
   m_Name: HoodEnemy
   m_TagString: Enemy
@@ -543,7 +545,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1987562309852346729}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c3504142957eec9489f72633e0591d3e, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -573,7 +575,7 @@ NavMeshAgent:
   m_Acceleration: 999
   avoidancePriority: 50
   m_AngularSpeed: 999
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -598,6 +600,47 @@ MonoBehaviour:
   patrolWaitTime: 2
   patrolPoints: []
   randomPatrol: 1
+--- !u!114 &2827138052613868755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987562309852346729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b82f78db8df7ce428ae0f276bae2bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combat: {fileID: 11400000, guid: 926d4640823542d4f9c13a977dc4e3b6, type: 2}
+  knockbackForce: 10
+--- !u!54 &-4247738186150393495
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987562309852346729}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &2213519446104498708
 GameObject:
   m_ObjectHideFlags: 0
