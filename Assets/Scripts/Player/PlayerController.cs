@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using Management;
+using UnityEditor;
 using UnityEngine;
 
 namespace PlayerController.Player
@@ -14,6 +16,7 @@ namespace PlayerController.Player
         [SerializeField] private float speed; //scriptable
         private bool isMoving = false;
         private Vector3 direction = Vector3.zero;
+        private bool suspendMovement = false;
         
         [Header("Dashing")]
         
@@ -37,7 +40,11 @@ namespace PlayerController.Player
 
 
         [Header("Combat")]
-        [SerializeField] private Collider weaponCollider; 
+        [SerializeField] private Collider weaponCollider;
+
+        [SerializeField] private List<GameObject> weapons;
+        private int currentWeapon = 0;
+        [SerializeField] private List<int> weaponAnimationHashes;
         
         [Header("Animation")]
         private Animator animator;
@@ -46,6 +53,9 @@ namespace PlayerController.Player
         private static readonly int IsDashingAnim = Animator.StringToHash("isDashingAnim");
         private static readonly int Attack1 = Animator.StringToHash("Attack1");
         private static readonly int Speed = Animator.StringToHash("Speed");
+        
+        private static readonly int OneHandedIdle = Animator.StringToHash("Idle");
+        private static readonly int TwoHandedIdle = Animator.StringToHash("2H_Idle");
 
 
         private void Start()
@@ -53,8 +63,43 @@ namespace PlayerController.Player
             Movement.MovementInputReceived += MovementInputReceived;
             Movement.DashInputReceived += DashInputReceived;
             Movement.AttackInputReceived += AttackInputReceived;
-            animator = GetComponent<Animator>();
             
+            animator = GetComponent<Animator>();
+            weaponAnimationHashes.Add(OneHandedIdle);
+            weaponAnimationHashes.Add(TwoHandedIdle);
+            Movement.WeaponSwitchInputReceived += WeaponSwitchInputReceived;
+
+        }
+
+        private void WeaponSwitchInputReceived(int weaponIndex)
+        {
+            switch (weaponIndex)
+            {
+                case 1:
+                    if(currentWeapon != 0)
+                        SwitchWeapon1();
+                    break;
+                case 2:
+                    if(currentWeapon != 1)
+                        SwitchWeapon2();
+                    break;
+            }
+        }
+
+        private void SwitchWeapon2()
+        {
+            weapons[1].SetActive(true);
+            weapons[0].SetActive(false);
+            animator.Play(TwoHandedIdle);
+            currentWeapon = 1;
+        }
+
+        private void SwitchWeapon1()
+        {
+            weapons[0].SetActive(true);
+            weapons[1].SetActive(false);
+            animator.Play(OneHandedIdle);
+            currentWeapon = 0;
         }
 
         private void AttackInputReceived(bool doAttack)
@@ -131,7 +176,7 @@ namespace PlayerController.Player
             //Debug.Log(horizontal + " " + vertical);
             //Debug.Log($"{direction.x} {direction.y} {direction.z}");
             isMoving = directionAndSpeed != Vector3.zero;
-            if (isMoving)
+            if (isMoving && !suspendMovement)
             {
                 controller.Move(directionAndSpeed);
                 animator.SetFloat(Speed, 1f);
@@ -144,12 +189,25 @@ namespace PlayerController.Player
         //[Header("Collision Toggles")]
         private void SwordCollisionOn()
         {
-            weaponCollider.enabled = true;
+            //weaponCollider.enabled = true;
+            weapons[currentWeapon].GetComponent<Collider>().enabled = true;
         }
 
         private void SwordCollisionOff()
         {
-            weaponCollider.enabled = false;
+            //weaponCollider.enabled = false;
+            weapons[currentWeapon].GetComponent<Collider>().enabled = false;
         }
+
+        private void SuspendMovementOn()
+        {
+            suspendMovement = true;
+        }
+
+        private void SuspendMovementOff()
+        {
+            suspendMovement = false;
+        }
+        
     }
 }
