@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using Management;
+using ScriptableObjects;
 using UnityEditor;
 using UnityEngine;
 
 namespace PlayerController.Player
 {
+    enum WeaponIndex {Sword = 0, Axe = 1}
     public class PlayerController : MonoBehaviour
     {
 
         [SerializeField]
         private InputManager Movement;
+        [SerializeField]
+        private CharacterController controller;
         
         [Header("Movement")]
         [SerializeField] private float speed; //scriptable
@@ -29,21 +33,14 @@ namespace PlayerController.Player
 
 
         [Header("Attacking")]
-        
         [SerializeField] private float attackCooldown = 1; //scriptable
-        private bool isAttacking = false;
         private bool canAttack = true;
+        private bool midAxeAnimation = false;
         
-        
-        [SerializeField]
-        private CharacterController controller;
-
-
         [Header("Combat")]
         [SerializeField] private Collider weaponCollider;
-
         [SerializeField] private List<GameObject> weapons;
-        private int currentWeapon = 0;
+        private WeaponIndex _currentWeaponIndex = 0;
         [SerializeField] private List<int> weaponAnimationHashes;
         
         [Header("Animation")]
@@ -76,30 +73,31 @@ namespace PlayerController.Player
             switch (weaponIndex)
             {
                 case 1:
-                    if(currentWeapon != 0)
-                        SwitchWeapon1();
+                    if(_currentWeaponIndex != WeaponIndex.Sword)
+                        SwitchToWeaponSword();
                     break;
                 case 2:
-                    if(currentWeapon != 1)
-                        SwitchWeapon2();
+                    if(_currentWeaponIndex != WeaponIndex.Axe)
+                        SwitchToWeaponAxe();
                     break;
             }
         }
 
-        private void SwitchWeapon2()
+        private void SwitchToWeaponAxe()
         {
-            weapons[1].SetActive(true);
-            weapons[0].SetActive(false);
+            weapons[(int)WeaponIndex.Axe].SetActive(true);
+            weapons[(int)WeaponIndex.Sword].SetActive(false);
             animator.Play(TwoHandedIdle);
-            currentWeapon = 1;
+            _currentWeaponIndex = WeaponIndex.Axe;
         }
 
-        private void SwitchWeapon1()
+        private void SwitchToWeaponSword()
         {
-            weapons[0].SetActive(true);
-            weapons[1].SetActive(false);
+            if (midAxeAnimation) return;
+            weapons[(int)WeaponIndex.Sword].SetActive(true);
+            weapons[(int)WeaponIndex.Axe].SetActive(false);
             animator.Play(OneHandedIdle);
-            currentWeapon = 0;
+            _currentWeaponIndex = WeaponIndex.Sword;
         }
 
         private void AttackInputReceived(bool doAttack)
@@ -115,6 +113,14 @@ namespace PlayerController.Player
             animator.SetTrigger(Attack1);
         }
 
+        private void AxeAttackStart()
+        {
+            midAxeAnimation = true;
+        }
+        private void AxeAttackEnd()
+        {
+            midAxeAnimation = false;
+        }
         private void DashInputReceived(bool doDash)
         {
             if (doDash && _canDash)
@@ -190,13 +196,13 @@ namespace PlayerController.Player
         private void SwordCollisionOn()
         {
             //weaponCollider.enabled = true;
-            weapons[currentWeapon].GetComponent<Collider>().enabled = true;
+            weapons[(int)_currentWeaponIndex].GetComponent<Collider>().enabled = true;
         }
 
         private void SwordCollisionOff()
         {
             //weaponCollider.enabled = false;
-            weapons[currentWeapon].GetComponent<Collider>().enabled = false;
+            weapons[(int)_currentWeaponIndex].GetComponent<Collider>().enabled = false;
         }
 
         private void SuspendMovementOn()
