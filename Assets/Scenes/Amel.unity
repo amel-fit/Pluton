@@ -1119,6 +1119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e3342c73567b5f4bb262b49858a362d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputManager: {fileID: 1931176389}
   ability: {fileID: 11400000, guid: 3f420f383d58a35478292bcebdc1588c, type: 2}
   player: {fileID: 543785875}
 --- !u!4 &571448231 stripped
@@ -1786,6 +1787,10 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 57a17a0b1f64b0242b475909804d4902, type: 2}
+    - target: {fileID: 4144328794045158992, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
+      propertyPath: weaponData
+      value: 
+      objectReference: {fileID: 11400000, guid: 57a17a0b1f64b0242b475909804d4902, type: 2}
     - target: {fileID: 5645715969612351072, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
       propertyPath: m_Size.y
       value: 1.17
@@ -1819,6 +1824,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8003644702081526362, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
+      propertyPath: hitBox
+      value: 
+      objectReference: {fileID: 543785885}
+    - target: {fileID: 8003644702081526362, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
       propertyPath: Movement
       value: 
       objectReference: {fileID: 1931176389}
@@ -1826,6 +1835,10 @@ PrefabInstance:
       propertyPath: dashSpeed
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8003644702081526362, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
+      propertyPath: inputManager
+      value: 
+      objectReference: {fileID: 1931176389}
     - target: {fileID: 8003644702081526362, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
       propertyPath: weapons.Array.size
       value: 2
@@ -1850,14 +1863,14 @@ PrefabInstance:
       addedObject: {fileID: 1404380707}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7306107439986870587, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 543785885}
+    - targetCorrespondingSourceObject: {fileID: 7306107439986870587, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 543785886}
     - targetCorrespondingSourceObject: {fileID: 7306107439986870587, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 543785880}
-    - targetCorrespondingSourceObject: {fileID: 7306107439986870587, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 543785885}
   m_SourcePrefab: {fileID: 100100000, guid: 25fff3c822b22a64298fa80a65de508d, type: 3}
 --- !u!1 &782252662
 GameObject:
@@ -3124,7 +3137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f459b952ab2e0f1419e8d71cbbc90b00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 11400000, guid: 8b836e7e06db29b4b87e19cf517f6e7d, type: 2}
+  weaponData: {fileID: 11400000, guid: 8b836e7e06db29b4b87e19cf517f6e7d, type: 2}
 --- !u!65 &1404380711
 BoxCollider:
   m_ObjectHideFlags: 0

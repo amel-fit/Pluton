@@ -2,13 +2,14 @@ using System;
 using Core;
 using ScriptableObjects;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Player
 {
     public class WeaponController : MonoBehaviour
     {
-        [SerializeField] private Weapon weapon;
+        [FormerlySerializedAs("weapon")] [SerializeField] private WeaponData weaponData;
         private float calculatedDamage = 0;
         
         private void OnTriggerEnter(Collider other)
@@ -17,8 +18,8 @@ namespace Player
             
             if (damageable == null) return;
             
-            calculatedDamage = weapon.damage * (((Random.value * 100)< weapon.criticalChance) ? 2f : 1f);
-            weapon.ApplyDamage(damageable, calculatedDamage);
+            calculatedDamage = weaponData.damage * (((Random.value * 100)< weaponData.criticalChance) ? 2f : 1f);
+            weaponData.ApplyDamage(damageable, calculatedDamage);
         }
     }
 }

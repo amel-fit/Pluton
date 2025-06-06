@@ -5,14 +5,15 @@ using Management;
 using ScriptableObjects;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PlayerController.Player
 {
     enum WeaponIndex {Sword = 0, Axe = 1}
     public class PlayerController : MonoBehaviour, IEntity, IDamageable
     {
-        [SerializeField]
-        private InputManager Movement;
+        [FormerlySerializedAs("Movement")] [SerializeField]
+        private InputManager inputManager;
         [SerializeField]
         private CharacterController controller;
         
@@ -41,6 +42,7 @@ namespace PlayerController.Player
         [SerializeField] private List<GameObject> weapons;
         [SerializeField] private List<int> weaponAnimationHashes;
         private WeaponIndex _currentWeaponIndex = 0;
+        [SerializeField] public Collider hitBox = null;
         
         [field: SerializeField]
         public CharacterCharacteristics Characteristics { get; set; }
@@ -69,10 +71,10 @@ namespace PlayerController.Player
 
         private void Start()
         {
-            Movement.MovementInputReceived += MovementInputReceived;
-            Movement.DashInputReceived += DashInputReceived;
-            Movement.AttackInputReceived += AttackInputReceived;
-            Movement.WeaponSwitchInputReceived += WeaponSwitchInputReceived;
+            inputManager.MovementInputReceived += MovementInputReceived;
+            inputManager.DashInputReceived += DashInputReceived;
+            inputManager.AttackInputReceived += AttackInputReceived;
+            inputManager.WeaponSwitchInputReceived += WeaponSwitchInputReceived;
             
             animator = GetComponent<Animator>();
             weaponAnimationHashes.Add(OneHandedIdle);
@@ -88,6 +90,7 @@ namespace PlayerController.Player
             Health = Characteristics.StartingHealth;
         }
 
+        #region WeaponSwitching
         private void WeaponSwitchInputReceived(int weaponIndex)
         {
             if (midAxeAnimation) return;
@@ -106,20 +109,22 @@ namespace PlayerController.Player
 
         private void SwitchToWeaponAxe()
         {
+            animator.Play(TwoHandedIdle);
             weapons[(int)WeaponIndex.Axe].SetActive(true);
             weapons[(int)WeaponIndex.Sword].SetActive(false);
-            animator.Play(TwoHandedIdle);
             _currentWeaponIndex = WeaponIndex.Axe;
         }
 
         private void SwitchToWeaponSword()
         {
-            
+            animator.Play(OneHandedIdle);
             weapons[(int)WeaponIndex.Sword].SetActive(true);
             weapons[(int)WeaponIndex.Axe].SetActive(false);
-            animator.Play(OneHandedIdle);
             _currentWeaponIndex = WeaponIndex.Sword;
         }
+        #endregion
+
+        #region Attacking
 
         private void AttackInputReceived(bool doAttack)
         {
@@ -139,7 +144,13 @@ namespace PlayerController.Player
             if (doDash && _canDash)
                 StartCoroutine(Dash());
         }
+        #endregion
 
+        #region Abilities
+
+        
+
+        #endregion
         private IEnumerator Dash()
         {
             _canDash = false;
@@ -161,7 +172,8 @@ namespace PlayerController.Player
             yield return cooldown;
             _canDash = true;
         }
-        
+
+        #region Movement
         private void MovementInputReceived(float horizontal, float vertical)
         {
             direction = new Vector3(horizontal, 0, vertical).normalized;
@@ -201,15 +213,15 @@ namespace PlayerController.Player
                 animator.SetFloat(Speed, 0f);
             }
         }
+        #endregion
 
-
-        //[Header("Collision Toggles")]
+        #region AnimationEvents
         private void WeaponCollisionOn() => weapons[(int)_currentWeaponIndex].GetComponent<Collider>().enabled = true;
         private void WeaponCollisionOff() => weapons[(int)_currentWeaponIndex].GetComponent<Collider>().enabled = false;
         private void AxeAttackStart() => midAxeAnimation = true;
         private void AxeAttackEnd() => midAxeAnimation = false;
         private void SuspendMovementOn() => suspendMovement = true;
         private void SuspendMovementOff() => suspendMovement = false;
-
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Codice.Client.Common.OAuth;
 using UnityEngine;
 
 namespace Management
@@ -9,7 +10,7 @@ namespace Management
         public Action<bool> DashInputReceived;
         public Action<bool> AttackInputReceived;
         public Action<int> WeaponSwitchInputReceived;
-        
+        public Action<bool> ActivateAbilityReceived;
         
 
         public void FixedUpdate()
@@ -24,6 +25,8 @@ namespace Management
             AttackInputReceived?.Invoke(Input.GetKeyDown(KeyCode.Mouse0));
             if (Input.GetKeyDown(KeyCode.Alpha1)) WeaponSwitchInputReceived?.Invoke(1);
             if (Input.GetKeyDown(KeyCode.Alpha2)) WeaponSwitchInputReceived?.Invoke(2);
+            ActivateAbilityReceived?.Invoke(Input.GetKeyDown(KeyCode.Q));
+            
         }
     }
 }

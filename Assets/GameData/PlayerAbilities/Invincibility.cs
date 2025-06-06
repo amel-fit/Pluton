@@ -1,20 +1,24 @@
 using ScriptableObjects;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace GameData.PlayerAbilities
 {
     [CreateAssetMenu(fileName = "Invincibility", menuName = "Scriptable Objects/Invincibility")]
-    public class Invincibility : PlayerAbility
+    public class Invincibility : PlayerAbilityData
     {
-        public override void Activate(GameObject parent)
+        private Collider playerCollider = new();
+        public override void Activate(GameObject player)
         {
-            // Collider c = parent.GetComponent<Collider>();
-            // c.enabled = false;
-            // Debug.Log("INVINCIBLE!");
-                //wait?
-            // c.enabled = true;
-            // Debug.Log("vincible....");
+            playerCollider = player.GetComponent<PlayerController.Player.PlayerController>().hitBox;
+            playerCollider.enabled = false;
+            Debug.Log("INVINCIBLE!");
         }
-    
+
+        public override void Deactivate(GameObject player)
+        {
+            playerCollider.enabled = true;
+            Debug.Log("vincible....");
+        }
     }
 }

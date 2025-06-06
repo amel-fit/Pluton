@@ -4,7 +4,7 @@ using Core;
 namespace ScriptableObjects
 {
     [CreateAssetMenu(fileName = "Weapon", menuName = "Scriptable Objects/Weapon")]
-    public class Weapon : ScriptableObject
+    public class WeaponData : ScriptableObject
     {
         [SerializeField] public float damage;
         [SerializeField] public float criticalChance;
