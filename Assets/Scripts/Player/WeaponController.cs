@@ -1,26 +1,24 @@
 using System;
-using Enemy;
+using Core;
 using ScriptableObjects;
 using UnityEngine;
-using Random = System.Random;
+using Random = UnityEngine.Random;
 
 namespace Player
 {
     public class WeaponController : MonoBehaviour
     {
         [SerializeField] private Weapon weapon;
-        private float damage = 0;
-        private Random r = new Random();
+        private float calculatedDamage = 0;
+        
         private void OnTriggerEnter(Collider other)
         {
+            var damageable = other.GetComponentInParent<IDamageable>();
             
-            if (other.gameObject.CompareTag("Enemy"))
-            {
-                damage = weapon.damage * (((r.Next() % 100)< weapon.criticalChance) ? 2f : 1f);
-                //Debug.Log("Enemy hit!");
-                other.GetComponentInParent<EnemyCombatController>().TakeDamage(damage);
-            }
+            if (damageable == null) return;
+            
+            calculatedDamage = weapon.damage * (((Random.value * 100)< weapon.criticalChance) ? 2f : 1f);
+            weapon.ApplyDamage(damageable, calculatedDamage);
         }
-        
     }
 }

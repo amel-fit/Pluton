@@ -46714,15 +46714,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: AxeAttackStart
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.33333334
-    functionName: SwordCollisionOn
+    functionName: WeaponCollisionOn
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.6
-    functionName: SwordCollisionOff
+    functionName: WeaponCollisionOff
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -46730,6 +46737,13 @@ AnimationClip:
     messageOptions: 0
   - time: 1.1
     functionName: SuspendMovementOff
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.1
+    functionName: AxeAttackEnd
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core;
 using Management;
 using ScriptableObjects;
 using UnityEditor;
@@ -8,9 +9,8 @@ using UnityEngine;
 namespace PlayerController.Player
 {
     enum WeaponIndex {Sword = 0, Axe = 1}
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IEntity, IDamageable
     {
-
         [SerializeField]
         private InputManager Movement;
         [SerializeField]
@@ -38,38 +38,59 @@ namespace PlayerController.Player
         private bool midAxeAnimation = false;
         
         [Header("Combat")]
-        [SerializeField] private Collider weaponCollider;
         [SerializeField] private List<GameObject> weapons;
-        private WeaponIndex _currentWeaponIndex = 0;
         [SerializeField] private List<int> weaponAnimationHashes;
+        private WeaponIndex _currentWeaponIndex = 0;
         
+        [field: SerializeField]
+        public CharacterCharacteristics Characteristics { get; set; }
+        
+        [SerializeField]
+        private CharacterCharacteristicsData CharacteristicsData;
+        
+        [field: SerializeField]
+        public float Health { get; set; }
+
+        public void TakeDamage()
+        {
+            throw new System.NotImplementedException();
+        }
+
+
         [Header("Animation")]
         private Animator animator;
 
-
         private static readonly int IsDashingAnim = Animator.StringToHash("isDashingAnim");
-        private static readonly int Attack1 = Animator.StringToHash("Attack1");
         private static readonly int Speed = Animator.StringToHash("Speed");
         
+        private static readonly int Attack1 = Animator.StringToHash("Attack1");
         private static readonly int OneHandedIdle = Animator.StringToHash("Idle");
         private static readonly int TwoHandedIdle = Animator.StringToHash("2H_Idle");
-
 
         private void Start()
         {
             Movement.MovementInputReceived += MovementInputReceived;
             Movement.DashInputReceived += DashInputReceived;
             Movement.AttackInputReceived += AttackInputReceived;
+            Movement.WeaponSwitchInputReceived += WeaponSwitchInputReceived;
             
             animator = GetComponent<Animator>();
             weaponAnimationHashes.Add(OneHandedIdle);
             weaponAnimationHashes.Add(TwoHandedIdle);
-            Movement.WeaponSwitchInputReceived += WeaponSwitchInputReceived;
 
+            Characteristics = new CharacterCharacteristics()
+            {
+                Dexterity = CharacteristicsData.characteristics.Dexterity,
+                Strength = CharacteristicsData.characteristics.Strength,
+                StartingHealth = CharacteristicsData.characteristics.StartingHealth
+            };
+            
+            Health = Characteristics.StartingHealth;
         }
 
         private void WeaponSwitchInputReceived(int weaponIndex)
         {
+            if (midAxeAnimation) return;
             switch (weaponIndex)
             {
                 case 1:
@@ -93,7 +114,7 @@ namespace PlayerController.Player
 
         private void SwitchToWeaponSword()
         {
-            if (midAxeAnimation) return;
+            
             weapons[(int)WeaponIndex.Sword].SetActive(true);
             weapons[(int)WeaponIndex.Axe].SetActive(false);
             animator.Play(OneHandedIdle);
@@ -113,14 +134,6 @@ namespace PlayerController.Player
             animator.SetTrigger(Attack1);
         }
 
-        private void AxeAttackStart()
-        {
-            midAxeAnimation = true;
-        }
-        private void AxeAttackEnd()
-        {
-            midAxeAnimation = false;
-        }
         private void DashInputReceived(bool doDash)
         {
             if (doDash && _canDash)
@@ -152,16 +165,13 @@ namespace PlayerController.Player
         private void MovementInputReceived(float horizontal, float vertical)
         {
             direction = new Vector3(horizontal, 0, vertical).normalized;
-            
             RotatePlayer(horizontal, vertical);
             if (!_isDashing)
                 MovePlayer(direction * (Time.fixedDeltaTime * speed));
-            
         }
 
         private void RotatePlayer(float horizontal, float vertical)
         {
-            
             if (horizontal != 0 && vertical != 0)
             {
                 //45 degrees
@@ -179,8 +189,7 @@ namespace PlayerController.Player
 
         private void MovePlayer(Vector3 directionAndSpeed)
         {
-            //Debug.Log(horizontal + " " + vertical);
-            //Debug.Log($"{direction.x} {direction.y} {direction.z}");
+            
             isMoving = directionAndSpeed != Vector3.zero;
             if (isMoving && !suspendMovement)
             {
@@ -188,32 +197,19 @@ namespace PlayerController.Player
                 animator.SetFloat(Speed, 1f);
             }
             else
+            {
                 animator.SetFloat(Speed, 0f);
+            }
         }
 
 
         //[Header("Collision Toggles")]
-        private void SwordCollisionOn()
-        {
-            //weaponCollider.enabled = true;
-            weapons[(int)_currentWeaponIndex].GetComponent<Collider>().enabled = true;
-        }
+        private void WeaponCollisionOn() => weapons[(int)_currentWeaponIndex].GetComponent<Collider>().enabled = true;
+        private void WeaponCollisionOff() => weapons[(int)_currentWeaponIndex].GetComponent<Collider>().enabled = false;
+        private void AxeAttackStart() => midAxeAnimation = true;
+        private void AxeAttackEnd() => midAxeAnimation = false;
+        private void SuspendMovementOn() => suspendMovement = true;
+        private void SuspendMovementOff() => suspendMovement = false;
 
-        private void SwordCollisionOff()
-        {
-            //weaponCollider.enabled = false;
-            weapons[(int)_currentWeaponIndex].GetComponent<Collider>().enabled = false;
-        }
-
-        private void SuspendMovementOn()
-        {
-            suspendMovement = true;
-        }
-
-        private void SuspendMovementOff()
-        {
-            suspendMovement = false;
-        }
-        
     }
 }

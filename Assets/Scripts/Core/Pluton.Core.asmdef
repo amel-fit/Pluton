@@ -1,9 +1,7 @@
 {
-    "name": "Pluton.ScriptableObjects",
+    "name": "Pluton.Core",
     "rootNamespace": "",
-    "references": [
-        "GUID:5082e2f51cd69bd42be62e6a26d4509d"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

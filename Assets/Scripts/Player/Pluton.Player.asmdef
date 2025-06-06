@@ -4,7 +4,7 @@
     "references": [
         "Management",
         "Pluton.ScriptableObjects",
-        "Pluton.Enemy"
+        "Pluton.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

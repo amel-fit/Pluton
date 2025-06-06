@@ -1,15 +1,12 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ScriptableObjects
 {
     [CreateAssetMenu(fileName = "EnemyCombat", menuName = "Scriptable Objects/Enemy/EnemyCombat")]
     public class EnemyCombat : ScriptableObject
     {
-
-
-        [SerializeField] private float health;
-        [SerializeField] public float damage;
-        
-        public float GetHealth() => health;
+        [SerializeField] private CharacterCharacteristicsData characteristicsData;
+        public float GetHealth() => characteristicsData.characteristics.StartingHealth;
     }
 }
