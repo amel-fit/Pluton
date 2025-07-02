@@ -1,4 +1,16 @@
 {
-	"name": "Pluton.Enemy",
-	"references":[ "GUID:714b48dab16ad43448134a36ab2b197e" ]
+    "name": "Pluton.Enemy",
+    "rootNamespace": "",
+    "references": [
+        "GUID:714b48dab16ad43448134a36ab2b197e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -208,6 +208,11 @@ namespace PlayerController.Player
         {
             suspendMovement = false;
         }
+
+        void TakeDamage()
+        {
+            
+        }
         
     }
 }

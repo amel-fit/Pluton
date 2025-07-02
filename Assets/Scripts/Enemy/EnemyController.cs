@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Search;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -9,7 +11,8 @@ public class EnemyAI : MonoBehaviour
     {
         Idle,
         Patrol,
-        Chase
+        Chase,
+        Attack
     }
 
     [Header("Enemy Settings")]
@@ -20,6 +23,16 @@ public class EnemyAI : MonoBehaviour
     [Header("Patrol Settings")]
     public Transform[] patrolPoints;
     public bool randomPatrol = true;
+
+    [Header("Attack Settings")] 
+    [SerializeField] private float attackRange = 1.8f;
+    [SerializeField] private float attackCooldown = 0;
+    [SerializeField] private float attackDuration = 1f;
+    
+    
+    private float lastAttackTime = 0f;
+    private bool isAttacking = false;
+    private float attackTimer = 0f;
     
     private Transform playerTransform;
     private NavMeshAgent agent;
@@ -70,7 +83,14 @@ public class EnemyAI : MonoBehaviour
         
         if (distanceToPlayer <= detectionRadius && HasLineOfSight())
         {
-            currentState = EnemyState.Chase;
+            if (distanceToPlayer <= attackRange)
+            {
+                currentState = EnemyState.Attack;
+            }
+            else
+            {
+                currentState = EnemyState.Chase;
+            }
         }
         else
         {
@@ -90,9 +110,12 @@ public class EnemyAI : MonoBehaviour
             case EnemyState.Chase:
                 ChaseBehavior();
                 break;
+            case EnemyState.Attack:
+                AttackBehaviour();
+                break;
         }
         
-        if (currentState == EnemyState.Chase)
+        if (currentState == EnemyState.Chase || currentState == EnemyState.Attack)
         {
             if (playerTransform != null)
             {
@@ -113,7 +136,45 @@ public class EnemyAI : MonoBehaviour
             }
         }
     }
-    
+
+    private void AttackBehaviour()
+    {
+        if (agent != null)
+        {
+            agent.isStopped = true;
+        }
+        animator.SetFloat("Speed", 0);
+        if (!isAttacking && Time.time >= lastAttackTime + attackCooldown)
+        {
+            StartAttack();
+        }
+
+        if (isAttacking)
+        {
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= attackDuration)
+            {
+                EndAttack();
+            }
+        }
+    }
+
+    private void EndAttack()
+    {
+        isAttacking = false;
+        animator.SetBool("IsAttacking", false);
+    }
+
+    private void StartAttack()
+    {
+        isAttacking = true;
+        attackTimer = 0f;
+        lastAttackTime = Time.time;
+        
+        animator.SetBool("IsAttacking", true);
+        animator.SetTrigger("Attack");
+    }
+
     void IdleBehavior()
     {
         if (agent != null)
@@ -121,6 +182,7 @@ public class EnemyAI : MonoBehaviour
             agent.isStopped = true;
         }
         animator.SetFloat("Speed", 0f);
+        animator.SetBool("IsAttacking", false);
     }
     
     void ChaseBehavior()
@@ -138,6 +200,7 @@ public class EnemyAI : MonoBehaviour
             transform.position += direction * moveSpeed * Time.deltaTime;
         }
         animator.SetFloat("Speed", 1f);
+        animator.SetBool("IsAttacking", false);
     }
     
     void PatrolBehavior()
@@ -249,5 +312,14 @@ public class EnemyAI : MonoBehaviour
         }
 
         return false;
+    }
+    
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }
