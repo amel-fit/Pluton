@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Core;
 using Management;
+using Player;
 using ScriptableObjects;
 using UnityEditor;
 using UnityEngine;
@@ -16,9 +18,11 @@ namespace PlayerController.Player
         private InputManager inputManager;
         [SerializeField]
         private CharacterController controller;
+
+        [SerializeField] private HealthUIController _healthUIController;
         
         [Header("Movement")]
-        [SerializeField] private float speed; //scriptable
+        [SerializeField] public float speed; //scriptable
         private bool isMoving = false;
         private Vector3 direction = Vector3.zero;
         private bool suspendMovement = false;
@@ -43,6 +47,7 @@ namespace PlayerController.Player
         [SerializeField] private List<int> weaponAnimationHashes;
         private WeaponIndex _currentWeaponIndex = 0;
         [SerializeField] public Collider hitBox = null;
+        public Action<float, IDamageable> DamageTaken;
         
         [field: SerializeField]
         public CharacterCharacteristics Characteristics { get; set; }
@@ -53,10 +58,6 @@ namespace PlayerController.Player
         [field: SerializeField]
         public float Health { get; set; }
 
-        public void TakeDamage()
-        {
-            throw new System.NotImplementedException();
-        }
 
 
         [Header("Animation")]
@@ -125,6 +126,12 @@ namespace PlayerController.Player
         #endregion
 
         #region Attacking
+        public void TakeDamage(float damage, IDamageable source)
+        {
+            Health -= damage;
+            _healthUIController.UpdateImageFill(Health, Characteristics.StartingHealth);
+            DamageTaken?.Invoke(damage, source);
+        }
 
         private void AttackInputReceived(bool doAttack)
         {

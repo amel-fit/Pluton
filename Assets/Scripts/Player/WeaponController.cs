@@ -19,7 +19,8 @@ namespace Player
             if (damageable == null) return;
             
             calculatedDamage = weaponData.damage * (((Random.value * 100)< weaponData.criticalChance) ? 2f : 1f);
-            weaponData.ApplyDamage(damageable, calculatedDamage);
+            
+            weaponData.ApplyDamage(damageable, calculatedDamage, this.GetComponentInParent<IDamageable>());
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using Core;
+using UnityEngine.UIElements;
 
 namespace ScriptableObjects
 {
@@ -9,9 +10,11 @@ namespace ScriptableObjects
         [SerializeField] public float damage;
         [SerializeField] public float criticalChance;
 
-        public void ApplyDamage(IDamageable damageable, float damage)
+        public void ApplyDamage(IDamageable damageable, float damage, IDamageable source)
         {
-            damageable.Health -= damage;
+            //i want to handle damage taking elsewhere
+            //damageable.Health -= damage;
+            damageable.TakeDamage(damage, source);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Enemy
         [field: SerializeField]
         public float Health { get; set; }
 
-        public void TakeDamage()
+        public void TakeDamage(float damage, IDamageable source)
         {
             throw new NotImplementedException();
         }

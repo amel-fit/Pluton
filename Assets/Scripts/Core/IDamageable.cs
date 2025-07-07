@@ -3,6 +3,6 @@ namespace Core
     public interface IDamageable
     {
         public float Health { get; set; }
-        public void TakeDamage();
+        public void TakeDamage(float damage, IDamageable source);
     }
 }
