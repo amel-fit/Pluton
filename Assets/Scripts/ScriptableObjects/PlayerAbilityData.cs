@@ -1,3 +1,4 @@
+using Core;
 using UnityEngine;
 
 namespace ScriptableObjects
@@ -8,7 +9,9 @@ namespace ScriptableObjects
         [SerializeField] public float cooldown;
         [SerializeField] public float activeTime;
         public virtual void Activate(GameObject player) {}
-
+        
         public virtual void Deactivate(GameObject player) { }
+
+        
     }
 }

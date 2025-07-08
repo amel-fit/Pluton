@@ -61,5 +61,23 @@ namespace Player
             currentStatus = AbilityStatus.Ready;
             yield return null;
         }
+
+        public void SetAbility(PlayerAbilityData newAbility)
+        {
+            //don't.
+            //while (currentStatus != AbilityStatus.Ready) ;
+            //ability = newAbility;
+            StartCoroutine(WaitAndSet(newAbility));    
+        }
+
+        private IEnumerator WaitAndSet(PlayerAbilityData newAbility)
+        {
+            while (currentStatus != AbilityStatus.Ready)
+            {
+                yield return new WaitForSeconds(1);
+            }
+
+            ability = newAbility;
+        }
     }
 }

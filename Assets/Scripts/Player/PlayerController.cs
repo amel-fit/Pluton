@@ -152,12 +152,7 @@ namespace PlayerController.Player
                 StartCoroutine(Dash());
         }
         #endregion
-
-        #region Abilities
-
         
-
-        #endregion
         private IEnumerator Dash()
         {
             _canDash = false;
@@ -230,5 +225,9 @@ namespace PlayerController.Player
         private void SuspendMovementOn() => suspendMovement = true;
         private void SuspendMovementOff() => suspendMovement = false;
         #endregion
+        
+        
+        
+        
     }
 }
