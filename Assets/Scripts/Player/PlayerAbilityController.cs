@@ -64,10 +64,11 @@ namespace Player
 
         public void SetAbility(PlayerAbilityData newAbility)
         {
-            //don't.
+            //don't.    
             //while (currentStatus != AbilityStatus.Ready) ;
             //ability = newAbility;
-            StartCoroutine(WaitAndSet(newAbility));    
+            if(newAbility != null)
+                StartCoroutine(WaitAndSet(newAbility));    
         }
 
         private IEnumerator WaitAndSet(PlayerAbilityData newAbility)

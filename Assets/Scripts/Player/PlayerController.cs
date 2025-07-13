@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Core;
 using Management;
-using Player;
 using ScriptableObjects;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace PlayerController.Player
+namespace Player
 {
     enum WeaponIndex {Sword = 0, Axe = 1}
     public class PlayerController : MonoBehaviour, IEntity, IDamageable
@@ -19,7 +17,8 @@ namespace PlayerController.Player
         [SerializeField]
         private CharacterController controller;
 
-        [SerializeField] private HealthUIController _healthUIController;
+        [SerializeField] private HealthUIController healthUIController;
+        [SerializeField] private FundsUIController fundsUIController;
         
         [Header("Movement")]
         [SerializeField] public float speed; //scriptable
@@ -38,7 +37,6 @@ namespace PlayerController.Player
 
 
         [Header("Attacking")]
-        [SerializeField] private float attackCooldown = 1; //scriptable
         private bool canAttack = true;
         private bool midAxeAnimation = false;
         
@@ -57,8 +55,9 @@ namespace PlayerController.Player
         
         [field: SerializeField]
         public float Health { get; set; }
+        private float MaxHealth;
 
-
+        [SerializeField] private int availableFunds = 0;
 
         [Header("Animation")]
         private Animator animator;
@@ -89,6 +88,8 @@ namespace PlayerController.Player
             };
             
             Health = Characteristics.StartingHealth;
+            MaxHealth = Characteristics.StartingHealth;
+            UpdateFundsUI();   
         }
 
         #region WeaponSwitching
@@ -129,7 +130,7 @@ namespace PlayerController.Player
         public void TakeDamage(float damage, IDamageable source)
         {
             Health -= damage;
-            _healthUIController.UpdateImageFill(Health, Characteristics.StartingHealth);
+            healthUIController.UpdateImageFill(Health, MaxHealth);
             DamageTaken?.Invoke(damage, source);
         }
 
@@ -225,9 +226,33 @@ namespace PlayerController.Player
         private void SuspendMovementOn() => suspendMovement = true;
         private void SuspendMovementOff() => suspendMovement = false;
         #endregion
-        
-        
-        
+
+        public void Heal(float HealAmount)
+        {
+            if (HealAmount <= 0) return;
+            Health = Math.Clamp(Health + HealAmount, 0, MaxHealth);
+            healthUIController.UpdateImageFill(Health, MaxHealth);
+        }
+
+        public void IncreaseMaxHealth(float AmountToAdd)
+        {
+            if (AmountToAdd <= 0) return;
+            MaxHealth += AmountToAdd;
+            healthUIController.UpdateImageFill(Health, MaxHealth);
+        }
+
+        public bool DecreaseFunds(int price)
+        {
+            if (price > availableFunds) return false;
+            availableFunds -= price;
+            UpdateFundsUI();
+            return true;
+        }
+
+        private void UpdateFundsUI()
+        {
+            fundsUIController.UpdateText(availableFunds.ToString());
+        }
         
     }
 }

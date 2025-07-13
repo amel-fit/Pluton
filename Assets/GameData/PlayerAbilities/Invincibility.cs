@@ -1,3 +1,4 @@
+using Player;
 using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +11,7 @@ namespace GameData.PlayerAbilities
         private Collider playerCollider = new();
         public override void Activate(GameObject player)
         {
-            playerCollider = player.GetComponent<PlayerController.Player.PlayerController>().hitBox;
+            playerCollider = player.GetComponent<PlayerController>().hitBox;
             playerCollider.enabled = false;
             Debug.Log("INVINCIBLE!");
         }

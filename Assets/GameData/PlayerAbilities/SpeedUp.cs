@@ -1,4 +1,5 @@
 using Core;
+using Player;
 using ScriptableObjects;
 using UnityEngine;
 
@@ -11,16 +12,16 @@ namespace GameData.PlayerAbilities
         private float newSpeed = 0;
         public override void Activate(GameObject player)
         {
-            oldSpeed = player.GetComponent<PlayerController.Player.PlayerController>().speed;
+            oldSpeed = player.GetComponent<PlayerController>().speed;
             newSpeed = oldSpeed * 1.2f;
             //Debug.Log($"{oldSpeed} -> {newSpeed}");
-            player.GetComponent<PlayerController.Player.PlayerController>().speed = newSpeed;
+            player.GetComponent<PlayerController>().speed = newSpeed;
         }
 
         public override void Deactivate(GameObject player)
         {
             //Debug.Log($"{newSpeed} -> {oldSpeed}");
-            player.GetComponent<PlayerController.Player.PlayerController>().speed = oldSpeed;
+            player.GetComponent<PlayerController>().speed = oldSpeed;
             oldSpeed = 0;
             newSpeed = 0;
         }

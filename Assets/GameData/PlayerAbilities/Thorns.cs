@@ -1,5 +1,6 @@
 using System;
 using Core;
+using Player;
 using ScriptableObjects;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,13 +10,13 @@ namespace GameData.PlayerAbilities
     [CreateAssetMenu(fileName = "Thorns", menuName = "Scriptable Objects/Thorns")]
     public class Thorns : PlayerAbilityData
     {
-        private PlayerController.Player.PlayerController playerController = null;
+        private PlayerController playerController = null;
         
         public override void Activate(GameObject player)
         {
             //When activated, make it so that when the player takes damage, the collider that did the damage also takes damage
             if(playerController == null)
-                playerController = player.GetComponent<PlayerController.Player.PlayerController>();
+                playerController = player.GetComponent<PlayerController>();
             playerController.DamageTaken += DamageTheSource;
             Debug.Log("THORNS ON");
         }

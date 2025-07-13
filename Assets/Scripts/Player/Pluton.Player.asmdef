@@ -4,7 +4,8 @@
     "references": [
         "Management",
         "Pluton.ScriptableObjects",
-        "Pluton.Core"
+        "Pluton.Core",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
