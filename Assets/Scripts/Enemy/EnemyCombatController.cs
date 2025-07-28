@@ -26,7 +26,19 @@ namespace Enemy
 
         public void TakeDamage(float damage, IDamageable source)
         {
-            throw new NotImplementedException();
+            Health -= damage;
+            Debug.Log($"took {damage} damage :: {Health}");
+            if (Health <= 0)
+            {
+                GetComponent<EnemyAI>().enabled = false;
+                animator.SetTrigger("Die");
+                Destroy(gameObject,2.4f);
+            }
+            else
+            {
+                //animator.SetTrigger("Hit");
+                Knockback();
+            }
         }
 
         private void Start()
