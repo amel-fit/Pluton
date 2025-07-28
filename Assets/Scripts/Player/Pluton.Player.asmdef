@@ -5,7 +5,8 @@
         "Management",
         "Pluton.ScriptableObjects",
         "Pluton.Core",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Pluton.Enemy"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
