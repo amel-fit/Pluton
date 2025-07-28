@@ -71,6 +71,7 @@ namespace Player
 
         private void Start()
         {
+            
             inputManager.MovementInputReceived += MovementInputReceived;
             inputManager.DashInputReceived += DashInputReceived;
             inputManager.AttackInputReceived += AttackInputReceived;

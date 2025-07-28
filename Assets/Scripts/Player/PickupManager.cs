@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using ScriptableObjects;
 using UnityEngine;
 
@@ -29,12 +30,9 @@ namespace Player
             
             
             gameObject.SetActive(false);
-            
-        }
+            Destroy(gameObject);
 
-        private void OnCollisionStay(Collision other)
-        {
-            Debug.Log("Staying");
         }
+        
     }
 }
