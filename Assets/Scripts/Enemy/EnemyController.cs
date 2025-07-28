@@ -1,11 +1,55 @@
+using System.Collections;
+using System.Collections.Generic;
+using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Search;
 
 namespace Enemy
 {
     public class EnemyAI : MonoBehaviour
     {
-        public enum EnemyState
+        Idle,
+        Patrol,
+        Chase,
+        Attack
+    }
+
+    [Header("Enemy Settings")]
+    public float moveSpeed = 3f;
+    public float detectionRadius = 5f;
+    public float patrolWaitTime = 2f;
+
+    [Header("Patrol Settings")]
+    public Transform[] patrolPoints;
+    public bool randomPatrol = true;
+
+    [Header("Attack Settings")] 
+    [SerializeField] private float attackRange = 1.8f;
+    [SerializeField] private float attackCooldown = 0;
+    [SerializeField] private float attackDuration = 1f;
+    
+    
+    private float lastAttackTime = 0f;
+    private bool isAttacking = false;
+    private float attackTimer = 0f;
+    
+    private Transform playerTransform;
+    private NavMeshAgent agent;
+    private Animator animator;
+    private EnemyState currentState;
+    
+    private int currentPatrolIndex = 0;
+    private float patrolTimer = 0f;
+    private bool isWaitingAtPatrolPoint = false;
+    
+    private void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        
+        if (agent != null)
         {
             Idle,
             Patrol,
@@ -43,6 +87,19 @@ namespace Enemy
                 agent.angularSpeed = 999;
             }
         
+        if (distanceToPlayer <= detectionRadius && HasLineOfSight())
+        {
+            if (distanceToPlayer <= attackRange)
+            {
+                currentState = EnemyState.Attack;
+            }
+            else
+            {
+                currentState = EnemyState.Chase;
+            }
+        }
+        else
+        {
             currentState = patrolPoints.Length > 0 ? EnemyState.Patrol : EnemyState.Idle;
         }
     
@@ -62,6 +119,126 @@ namespace Enemy
 
             Vector3 playerPos = playerTransform.position;
             Vector3 myPos = transform.position;
+        switch (currentState)
+        {
+            case EnemyState.Idle:
+                IdleBehavior();
+                break;
+                
+            case EnemyState.Patrol:
+                PatrolBehavior();
+                break;
+                
+            case EnemyState.Chase:
+                ChaseBehavior();
+                break;
+            case EnemyState.Attack:
+                AttackBehaviour();
+                break;
+        }
+        
+        if (currentState == EnemyState.Chase || currentState == EnemyState.Attack)
+        {
+            if (playerTransform != null)
+            {
+                RotateTowards(playerTransform.position);
+            }
+        }
+        else if (currentState == EnemyState.Patrol && !isWaitingAtPatrolPoint)
+        {
+            Vector3 movementDir = GetMovementDirection();
+            
+            if (movementDir != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(movementDir);
+            }
+            else if (patrolPoints.Length > 0)
+            {
+                RotateTowards(patrolPoints[currentPatrolIndex].position);
+            }
+        }
+    }
+
+    private void AttackBehaviour()
+    {
+        if (agent != null)
+        {
+            agent.isStopped = true;
+        }
+        animator.SetFloat("Speed", 0);
+        if (!isAttacking && Time.time >= lastAttackTime + attackCooldown)
+        {
+            StartAttack();
+        }
+
+        if (isAttacking)
+        {
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= attackDuration)
+            {
+                EndAttack();
+            }
+        }
+    }
+
+    private void EndAttack()
+    {
+        isAttacking = false;
+        animator.SetBool("IsAttacking", false);
+    }
+
+    private void StartAttack()
+    {
+        isAttacking = true;
+        attackTimer = 0f;
+        lastAttackTime = Time.time;
+        
+        animator.SetBool("IsAttacking", true);
+        animator.SetTrigger("Attack");
+    }
+
+    void IdleBehavior()
+    {
+        if (agent != null)
+        {
+            agent.isStopped = true;
+        }
+        animator.SetFloat("Speed", 0f);
+        animator.SetBool("IsAttacking", false);
+    }
+    
+    void ChaseBehavior()
+    {
+        if (agent != null)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(playerTransform.position);
+        }
+        else
+        {
+            Vector3 direction = (playerTransform.position - transform.position).normalized;
+            direction.y = 0;
+            
+            transform.position += direction * moveSpeed * Time.deltaTime;
+        }
+        animator.SetFloat("Speed", 1f);
+        animator.SetBool("IsAttacking", false);
+    }
+    
+    void PatrolBehavior()
+    {
+        animator.SetFloat("Speed", 1f);
+        
+        if (patrolPoints.Length == 0)
+        {
+            currentState = EnemyState.Idle;
+            return;
+        }
+        
+        Transform targetPoint = patrolPoints[currentPatrolIndex];
+        
+        if (isWaitingAtPatrolPoint)
+        {
 
             float distanceToPlayer = Vector3.Distance(
                 new Vector3(myPos.x, 0, myPos.z), 
@@ -250,5 +427,14 @@ namespace Enemy
 
             return false;
         }
+    }
+    
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }

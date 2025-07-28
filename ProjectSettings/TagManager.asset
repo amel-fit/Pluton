@@ -17,6 +17,8 @@ TagManager:
   - Enemy
   - PlayerWeapon
   - PlayerInteractable
+  - Floor2
+  - Floor3
   - 
   - 
   - 

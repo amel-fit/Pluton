@@ -254,6 +254,11 @@ namespace Player
         {
             fundsUIController.UpdateText(availableFunds.ToString());
         }
+
+        void TakeDamage()
+        {
+            
+        }
         
     }
 }
