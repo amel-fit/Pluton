@@ -5,6 +5,7 @@ using Core;
 using Management;
 using ScriptableObjects;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace Player
@@ -68,6 +69,7 @@ namespace Player
         private static readonly int Attack1 = Animator.StringToHash("Attack1");
         private static readonly int OneHandedIdle = Animator.StringToHash("Idle");
         private static readonly int TwoHandedIdle = Animator.StringToHash("2H_Idle");
+        private static readonly int DeathTrigger = Animator.StringToHash("DeathTrigger");
 
         private void Start()
         {
@@ -90,6 +92,7 @@ namespace Player
             
             Health = Characteristics.StartingHealth;
             MaxHealth = Characteristics.StartingHealth;
+            
             UpdateFundsUI();   
         }
 
@@ -133,6 +136,24 @@ namespace Player
             Health -= damage;
             healthUIController.UpdateImageFill(Health, MaxHealth);
             DamageTaken?.Invoke(damage, source);
+            if (Health <= 0)
+            {
+                StartCoroutine(Die());
+            }
+        }
+
+        private IEnumerator Die()
+        {
+            //Animation
+            suspendMovement = true;
+            animator.SetTrigger(DeathTrigger);
+                //UnloadScene / restart game or whatever
+                    //this should be handled by the SceneManager? (code below)
+            //wait a bit for the animation to finish 
+            yield return new WaitForSeconds(4);
+            //Take to main menu
+            SceneManager.LoadScene(0);
+            yield return null;
         }
 
         private void AttackInputReceived(bool doAttack)
@@ -147,13 +168,13 @@ namespace Player
         {
             animator.SetTrigger(Attack1);
         }
+        #endregion
 
         private void DashInputReceived(bool doDash)
         {
             if (doDash && _canDash)
                 StartCoroutine(Dash());
         }
-        #endregion
         
         private IEnumerator Dash()
         {
@@ -232,14 +253,14 @@ namespace Player
         {
             if (HealAmount <= 0) return;
             Health = Math.Clamp(Health + HealAmount, 0, MaxHealth);
-            healthUIController.UpdateImageFill(Health, MaxHealth);
+            UpdateHealthUI();
         }
 
         public void IncreaseMaxHealth(float AmountToAdd)
         {
             if (AmountToAdd <= 0) return;
             MaxHealth += AmountToAdd;
-            healthUIController.UpdateImageFill(Health, MaxHealth);
+            UpdateHealthUI();
         }
 
         public bool DecreaseFunds(int price)
@@ -253,6 +274,11 @@ namespace Player
         private void UpdateFundsUI()
         {
             fundsUIController.UpdateText(availableFunds.ToString());
+        }
+
+        private void UpdateHealthUI()
+        {
+            healthUIController.UpdateImageFill(Health, MaxHealth);
         }
         
     }
