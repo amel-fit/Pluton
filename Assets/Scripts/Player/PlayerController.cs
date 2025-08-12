@@ -213,6 +213,7 @@ namespace Player
 
         private void RotatePlayer(float horizontal, float vertical)
         {
+            if (suspendMovement) return;
             if (horizontal != 0 && vertical != 0)
             {
                 //45 degrees
