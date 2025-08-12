@@ -157,6 +157,7 @@ namespace Player
             //Take to main menu
             SceneManager.LoadScene(0);
             isDead = false;
+            suspendMovement = false;
             yield return null;
         }
 
