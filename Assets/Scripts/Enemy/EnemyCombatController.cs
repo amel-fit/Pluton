@@ -14,6 +14,9 @@ namespace Enemy
         private Animator animator;
         private Rigidbody rb;
         private Transform playerSource;
+
+        [SerializeField] private GameObject weapon;
+        
         
         [field: SerializeField]
         public CharacterCharacteristics Characteristics { get; set; }
@@ -63,21 +66,7 @@ namespace Enemy
             rb.AddForce(knockbackDir * knockbackForce, ForceMode.Impulse);
         }
         
-        // public void TakeDamage(float damage)
-        // {
-        //     Health -= damage;
-        //     Debug.Log($"took {damage} damage :: {health}");
-        //     if (health <= 0)
-        //     {
-        //         GetComponent<EnemyAI>().enabled = false;
-        //         animator.SetTrigger("Die");
-        //         Destroy(gameObject,2.4f);
-        //     }
-        //     else
-        //     {
-        //         //animator.SetTrigger("Hit");
-        //         Knockback();
-        //     }
-        // }
+        private void WeaponCollisionOn() => weapon.GetComponent<Collider>().enabled = true;
+        private void WeaponCollisionOff() => weapon.GetComponent<Collider>().enabled = false;
     }
 }
