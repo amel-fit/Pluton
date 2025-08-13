@@ -14,6 +14,7 @@ namespace Player
         
         private void OnTriggerEnter(Collider other)
         {
+            GetComponent<Collider>().enabled = false;
             var damageable = other.GetComponentInParent<IDamageable>();
             
             if (damageable == null) return;
