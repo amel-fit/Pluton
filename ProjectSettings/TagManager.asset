@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Floor
   - Enemy
+  - Spikes
   layers:
   - Default
   - TransparentFX
@@ -19,8 +20,6 @@ TagManager:
   - PlayerInteractable
   - Floor2
   - Floor3
-  - 
-  - 
   - 
   - 
   - 

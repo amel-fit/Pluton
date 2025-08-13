@@ -280,6 +280,5 @@ namespace Player
         {
             healthUIController.UpdateImageFill(Health, MaxHealth);
         }
-        
     }
 }
