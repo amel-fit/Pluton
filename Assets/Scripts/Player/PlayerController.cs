@@ -47,6 +47,7 @@ namespace Player
         private WeaponIndex _currentWeaponIndex = 0;
         [SerializeField] public Collider hitBox = null;
         public Action<float, IDamageable> DamageTaken;
+        public bool isDead = false;
         
         [field: SerializeField]
         public CharacterCharacteristics Characteristics { get; set; }
@@ -146,13 +147,17 @@ namespace Player
         {
             //Animation
             suspendMovement = true;
-            animator.SetTrigger(DeathTrigger);
+            if(!isDead)
+                animator.SetTrigger(DeathTrigger);
+            isDead = true;
                 //UnloadScene / restart game or whatever
                     //this should be handled by the SceneManager? (code below)
             //wait a bit for the animation to finish 
             yield return new WaitForSeconds(4);
             //Take to main menu
             SceneManager.LoadScene(0);
+            isDead = false;
+            suspendMovement = false;
             yield return null;
         }
 
@@ -209,6 +214,7 @@ namespace Player
 
         private void RotatePlayer(float horizontal, float vertical)
         {
+            if (suspendMovement) return;
             if (horizontal != 0 && vertical != 0)
             {
                 //45 degrees
