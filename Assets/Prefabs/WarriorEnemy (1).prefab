@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: -5754084199372789682}
   - component: {fileID: -7511558181221131132}
   - component: {fileID: 840803097959335427}
+  - component: {fileID: 1349593318297554196}
   m_Layer: 0
   m_Name: Skeleton_Axe
   m_TagString: Untagged
@@ -197,12 +198,25 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.70835346, y: 0.53148025, z: 0.28187063}
   m_Center: {x: 0.027852591, y: 0.61013186, z: -0.0000123522195}
+--- !u!114 &1349593318297554196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149155446097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f459b952ab2e0f1419e8d71cbbc90b00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: 8b836e7e06db29b4b87e19cf517f6e7d, type: 2}
 --- !u!1 &920833706138550643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2040,13 +2054,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  detectionRadius: 12
+  detectionRadius: 18
   patrolWaitTime: 2
   patrolPoints: []
   randomPatrol: 1
-  attackRange: 1.5
-  attackCooldown: 1.5
-  attackDuration: 0.5
+  attackRange: 1.8
+  attackCooldown: 0
+  attackDuration: 1
 --- !u!114 &5525459063934661016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2059,8 +2073,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b82f78db8df7ce428ae0f276bae2bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combat: {fileID: 11400000, guid: 926d4640823542d4f9c13a977dc4e3b6, type: 2}
   knockbackForce: 10
+  weapon: {fileID: 919132149155446097}
+  <Characteristics>k__BackingField:
+    Strength: 0
+    Dexterity: 0
+    StartingHealth: 0
+  CharacteristicsData: {fileID: 11400000, guid: 810196b719dba534eb5fc1167b280598, type: 2}
+  <Health>k__BackingField: 100
 --- !u!54 &3359505045604758562
 Rigidbody:
   m_ObjectHideFlags: 0
