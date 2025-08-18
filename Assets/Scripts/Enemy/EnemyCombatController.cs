@@ -1,15 +1,18 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Core;
 using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 namespace Enemy
 {
     public class EnemyCombatController : MonoBehaviour, IEntity, IDamageable
     {
         [SerializeField] private float knockbackForce = 15f;
+        [SerializeField] private List<GameObject> Coins;
         
         private Animator animator;
         private Rigidbody rb;
@@ -36,11 +39,29 @@ namespace Enemy
                 GetComponent<EnemyAI>().enabled = false;
                 animator.SetTrigger("Die");
                 Destroy(gameObject,2.4f);
+                DropCoins();
             }
             else
             {
                 //animator.SetTrigger("Hit");
                 Knockback();
+            }
+        }
+
+        private void DropCoins()
+        {
+            int numOfCoins = Random.Range(1, 10);
+            if (numOfCoins >= 6)
+            {
+                Instantiate(Coins[0], new Vector3(transform.position.x, 0.1f,transform.position.z) , transform.rotation);
+            }
+            else if(numOfCoins >= 2)
+            {
+                Instantiate(Coins[1], new Vector3(transform.position.x, 0.1f,transform.position.z) , transform.rotation);
+            }
+            else
+            {
+                Instantiate(Coins[2], new Vector3(transform.position.x, 0.1f,transform.position.z) , transform.rotation);
             }
         }
 

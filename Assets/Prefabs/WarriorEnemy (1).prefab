@@ -2074,6 +2074,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockbackForce: 10
+  Coins:
+  - {fileID: 6300271677664549155, guid: 8e1dd665ae557a340bfb495a7d3d0e81, type: 3}
+  - {fileID: 5972856161939779877, guid: c97458267fd2dce4584c2ab968854e65, type: 3}
+  - {fileID: 1108109679942111469, guid: bd1c8977fbe1a764c81933f0e032d5dc, type: 3}
   weapon: {fileID: 919132149155446097}
   <Characteristics>k__BackingField:
     Strength: 0
