@@ -2113,7 +2113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c31e602aa05aff4d9f43c041134b8fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyObject: {fileID: 8072528376431608866, guid: 2d55a7e0821c324488d7332567654022, type: 3}
+  EnemyObject: {fileID: 8072528376431608866, guid: 991635baef2059c4194c6cd2db763054, type: 3}
   Spawner: {fileID: 1146772770}
 --- !u!114 &295881416
 MonoBehaviour:
@@ -2127,7 +2127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c31e602aa05aff4d9f43c041134b8fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyObject: {fileID: 8816981580608493798, guid: c8bbb59c130f042429d02a3df9805295, type: 3}
+  EnemyObject: {fileID: 8816981580608493798, guid: 6d6e4f8d5303b7d4684c49d581205284, type: 3}
   Spawner: {fileID: 1508953746}
 --- !u!114 &295881417
 MonoBehaviour:
@@ -2141,7 +2141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c31e602aa05aff4d9f43c041134b8fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyObject: {fileID: 8816981580608493798, guid: c8bbb59c130f042429d02a3df9805295, type: 3}
+  EnemyObject: {fileID: 8816981580608493798, guid: 6d6e4f8d5303b7d4684c49d581205284, type: 3}
   Spawner: {fileID: 116187935}
 --- !u!4 &297731798 stripped
 Transform:
