@@ -2054,10 +2054,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  detectionRadius: 18
+  detectionRadius: 25
   patrolWaitTime: 2
-  patrolPoints:
-  - {fileID: 5822006767494881393, guid: f43d3e4ca79d0654eba51322e1fdb12f, type: 3}
+  patrolPoints: []
   randomPatrol: 1
   attackRange: 1.8
   attackCooldown: 0

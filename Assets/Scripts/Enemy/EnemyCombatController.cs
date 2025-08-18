@@ -9,14 +9,14 @@ namespace Enemy
 {
     public class EnemyCombatController : MonoBehaviour, IEntity, IDamageable
     {
-        [SerializeField] float knockbackForce = 15f;
+        [SerializeField] private float knockbackForce = 15f;
         
         private Animator animator;
         private Rigidbody rb;
         private Transform playerSource;
 
         [SerializeField] private GameObject weapon;
-        
+        private Vector3 knockbackDirection;
         
         [field: SerializeField]
         public CharacterCharacteristics Characteristics { get; set; }
@@ -62,8 +62,11 @@ namespace Enemy
 
         private void Knockback()
         {
-            Vector3 knockbackDir = (transform.position - playerSource.position).normalized;
-            rb.AddForce(knockbackDir * knockbackForce, ForceMode.Impulse);
+            knockbackDirection = transform.position - playerSource.position;
+            knockbackDirection.y = 0f;
+            knockbackDirection.Normalize();
+
+            rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
         }
         
         private void WeaponCollisionOn() => weapon.GetComponent<Collider>().enabled = true;

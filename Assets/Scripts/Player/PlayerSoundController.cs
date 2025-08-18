@@ -23,7 +23,7 @@ namespace Player
             float vertical = Input.GetAxisRaw("Vertical");
             bool isMoving = horizontal != 0 || vertical != 0;
 
-            targetVolume = isMoving ? 0.2f : 0f;
+            targetVolume = isMoving ? 1f : 0f;
             playerAudioSource.volume = Mathf.Lerp(playerAudioSource.volume, targetVolume, Time.deltaTime * fadeSpeed);
         }
     }
