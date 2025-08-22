@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Codice.Client.BaseCommands.Merge;
+using Codice.CM.Common.Tree;
 using Management;
 using PlasticPipe.Server;
 using ScriptableObjects;
@@ -16,12 +17,17 @@ namespace Player
         [SerializeField] public InputManager inputManager;
         [SerializeField] public PlayerAbilityData ability;
         [SerializeField] GameObject player;
-        private AbilityStatus currentStatus;    
+        private AbilityStatus currentStatus;
 
+        [SerializeField]
+        private AbilityUIController abilityUIController;
         private void Start()
         {
-            currentStatus = AbilityStatus.Ready;
+            ChangeStatus(AbilityStatus.Ready);
             inputManager.ActivateAbilityReceived += ActivateAbilityReceived;
+            abilityUIController.UpdateAbilityName(ability.name);
+            
+            abilityUIController.UpdateAbilityCooldown("0");
         }
 
         private void ActivateAbilityReceived(bool doActivate)
@@ -39,26 +45,32 @@ namespace Player
             {
                 Debug.Log("ActivatedAbility");
                 ability.Activate(player);
-                currentStatus = AbilityStatus.Active;
+                ChangeStatus(AbilityStatus.Active);
+                
                 StartCoroutine(AbilityActive());
             }
         }
 
         private IEnumerator AbilityActive()
         {
+            //StartCoroutine(CountDown(ability.activeTime));
             yield return new WaitForSeconds(ability.activeTime);
             Debug.Log("AbilityOnCooldown");
-            currentStatus = AbilityStatus.OnCooldown;
+            ChangeStatus(AbilityStatus.OnCooldown);
             ability.Deactivate(player);
             StartCoroutine(AbilityOnCooldown());
             yield return null;
         }
 
+        
+
         private IEnumerator AbilityOnCooldown()
         {
+            
+            //StartCoroutine(CountDown(ability.cooldown));
             yield return new WaitForSeconds(ability.cooldown);
             Debug.Log("AbilityReady");
-            currentStatus = AbilityStatus.Ready;
+            ChangeStatus(AbilityStatus.Ready);
             yield return null;
         }
 
@@ -79,6 +91,24 @@ namespace Player
             }
 
             ability = newAbility;
+            abilityUIController.UpdateAbilityName(ability.name);
+        }
+
+        private void ChangeStatus(AbilityStatus newStatus)
+        {
+            currentStatus = newStatus;
+            abilityUIController.UpdateAbilityStatus(newStatus.ToString());
+        }
+        
+        private IEnumerator CountDown(float abilityActiveTime)
+        {
+            float startTime = Time.time;
+            while (Time.time < startTime + abilityActiveTime)
+            {
+                abilityUIController.UpdateAbilityCooldown((abilityActiveTime - Time.deltaTime).ToString());
+            }
+            abilityUIController.UpdateAbilityCooldown("0");
+            yield return null;
         }
     }
 }

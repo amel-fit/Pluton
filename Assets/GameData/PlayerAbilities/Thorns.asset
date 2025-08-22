@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 5
   activeTime: 3
+  name: Thorns

@@ -8,6 +8,7 @@ namespace ScriptableObjects
     {
         [SerializeField] public float cooldown;
         [SerializeField] public float activeTime;
+        [SerializeField] public string name;
         public virtual void Activate(GameObject player) {}
         
         public virtual void Deactivate(GameObject player) { }
