@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 10
   activeTime: 5
+  name: Invincibility
