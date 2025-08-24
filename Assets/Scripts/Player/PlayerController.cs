@@ -191,7 +191,7 @@ namespace Player
             while (Time.time < startTime + dashTime)
             {
                 //do the dash, dash speed compounds on regular speed so it doesn't have to be bigger than moveSpeed
-                controller.Move(direction * (dashSpeed * Time.fixedDeltaTime));
+                controller.Move(direction * ((dashSpeed + speed) * Time.fixedDeltaTime));
                 yield return null;
             }
             _isDashing = false;
