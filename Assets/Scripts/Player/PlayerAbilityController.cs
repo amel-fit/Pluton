@@ -6,6 +6,7 @@ using Codice.CM.Common.Tree;
 using Management;
 using PlasticPipe.Server;
 using ScriptableObjects;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -17,7 +18,10 @@ namespace Player
         [SerializeField] public InputManager inputManager;
         [SerializeField] public PlayerAbilityData ability;
         [SerializeField] GameObject player;
-        private AbilityStatus currentStatus;
+        private AbilityStatus _currentStatus;
+        
+        private float _countDownTime;
+        private float _statusChangeTime;
 
         [SerializeField]
         private AbilityUIController abilityUIController;
@@ -30,23 +34,40 @@ namespace Player
             abilityUIController.UpdateAbilityCooldown("0");
         }
 
+        private void Update()
+        {
+            /*counting down here because it's easier than making a coroutine plus that didn't work so...?*/
+            if (_currentStatus != AbilityStatus.Ready)
+            {
+                {
+                    if (_countDownTime > _statusChangeTime)
+                    {
+                        _countDownTime -= Time.deltaTime;
+                        abilityUIController.UpdateAbilityCooldown((_countDownTime - _statusChangeTime).ToString("F2"));
+                    }
+                }
+            }else
+                abilityUIController.UpdateAbilityCooldown(null);
+                
+        }
+
         private void ActivateAbilityReceived(bool doActivate)
         {
             if (doActivate)
             {
-                //Debug.Log("ActivateAbilityInputReveived");
+                //Debug.Log("ActivateAbilityInputReceived");
                 ActivateAbility();
             }
         }
 
         private void ActivateAbility()
         {
-            if (currentStatus == AbilityStatus.Ready)
+            if (_currentStatus == AbilityStatus.Ready)
             {
                 Debug.Log("ActivatedAbility");
                 ability.Activate(player);
                 ChangeStatus(AbilityStatus.Active);
-                
+                _countDownTime = Time.time + ability.activeTime;
                 StartCoroutine(AbilityActive());
             }
         }
@@ -57,6 +78,7 @@ namespace Player
             yield return new WaitForSeconds(ability.activeTime);
             Debug.Log("AbilityOnCooldown");
             ChangeStatus(AbilityStatus.OnCooldown);
+            _countDownTime = _statusChangeTime + ability.cooldown;
             ability.Deactivate(player);
             StartCoroutine(AbilityOnCooldown());
             yield return null;
@@ -85,7 +107,7 @@ namespace Player
 
         private IEnumerator WaitAndSet(PlayerAbilityData newAbility)
         {
-            while (currentStatus != AbilityStatus.Ready)
+            while (_currentStatus != AbilityStatus.Ready)
             {
                 yield return new WaitForSeconds(1);
             }
@@ -96,19 +118,10 @@ namespace Player
 
         private void ChangeStatus(AbilityStatus newStatus)
         {
-            currentStatus = newStatus;
+            _statusChangeTime = Time.time;
+            _currentStatus = newStatus;
             abilityUIController.UpdateAbilityStatus(newStatus.ToString());
         }
         
-        private IEnumerator CountDown(float abilityActiveTime)
-        {
-            float startTime = Time.time;
-            while (Time.time < startTime + abilityActiveTime)
-            {
-                abilityUIController.UpdateAbilityCooldown((abilityActiveTime - Time.deltaTime).ToString());
-            }
-            abilityUIController.UpdateAbilityCooldown("0");
-            yield return null;
-        }
     }
 }

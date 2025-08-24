@@ -24,7 +24,7 @@ namespace Player
 
         public void UpdateAbilityCooldown([CanBeNull] string cooldownNumber)
         {
-            txtAbilityCooldown.text = cooldownNumber ?? "0";
+            txtAbilityCooldown.text = cooldownNumber ?? "";
         }
 
         public void UpdateAbilityStatus([CanBeNull] string abilityStatus)
