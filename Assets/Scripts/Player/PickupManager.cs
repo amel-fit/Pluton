@@ -77,7 +77,7 @@ namespace Player
             if (!playerMain.DecreaseFunds(Cost)) 
                 return;
             playerMain.IncreaseMaxHealth(MaxHealthIncrease);
-            playerMain.Heal(10);
+            playerMain.Heal(HealAmount);
                 
             var playerAbility = playerCollider.GetComponent<PlayerAbilityController>();
             playerAbility.SetAbility(HeldAbility);
