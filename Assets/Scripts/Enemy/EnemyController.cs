@@ -304,7 +304,7 @@ public class EnemyAI : MonoBehaviour
         Vector3 origin = transform.position + Vector3.up * 0.5f; 
         Vector3 target = playerTransform.position + Vector3.up * 0.5f;
         Vector3 direction = target - origin;
-        float distance = 20f;
+        float distance = 50f;
 
         if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
         {
