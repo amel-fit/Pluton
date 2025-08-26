@@ -53,7 +53,7 @@ namespace Management
             yield return new WaitForSeconds(3);
             StartCoroutine(Fade(endText));
             yield return new WaitUntil(() => endText.color.a > 0.9f);
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.0f);
             StartCoroutine(FadeInCredits());
             yield return null;
         }
