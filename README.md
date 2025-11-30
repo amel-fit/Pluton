@@ -37,7 +37,6 @@ Pluton combines fast-paced melee combat with room-based dungeon exploration. Eac
 ---
 
 ## 🕹 Controls
-> (Adjust these to match your project's input mapping)
 - **Move:** WASD
 - **Attack:** J 
 - **Dash:** Shift
@@ -48,7 +47,6 @@ Pluton combines fast-paced melee combat with room-based dungeon exploration. Eac
 ---
 
 ## 📸 Screenshots
-Place your screenshot image files in the project root (or `README` folder) and make sure the filenames match the ones below.
 
 ### Shop Scene
 ![Shop Scene](./Screenshots/Screenshot%202025-11-30%20173056.png)
